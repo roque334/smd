@@ -354,10 +354,27 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>commandLinkButton_4</sender>
+   <signal>clicked()</signal>
+   <receiver>main</receiver>
+   <slot>goRegistrarDonacion()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>751</x>
+     <y>499</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>914</x>
+     <y>336</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>goRegistrarDonante()</slot>
   <slot>goGestionarDonantes()</slot>
   <slot>goGestionarDonaciones()</slot>
+  <slot>goRegistrarDonacion()</slot>
  </slots>
 </ui>

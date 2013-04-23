@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '../Ui/main.ui'
+# Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Mon Apr 22 08:57:31 2013
-#      by: PyQt4 UI code generator 4.10
+# Created: Tue Apr 23 18:04:26 2013
+#      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,16 +12,7 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    def _fromUtf8(s):
-        return s
-
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+    _fromUtf8 = lambda s: s
 
 class Ui_main(object):
     def setupUi(self, main):
@@ -159,29 +150,30 @@ class Ui_main(object):
         QtCore.QObject.connect(self.commandLinkButton_2, QtCore.SIGNAL(_fromUtf8("clicked()")), main.goRegistrarDonante)
         QtCore.QObject.connect(self.commandLinkButton_7, QtCore.SIGNAL(_fromUtf8("clicked()")), main.goGestionarDonantes)
         QtCore.QObject.connect(self.commandLinkButton_5, QtCore.SIGNAL(_fromUtf8("clicked()")), main.goGestionarDonaciones)
+        QtCore.QObject.connect(self.commandLinkButton_4, QtCore.SIGNAL(_fromUtf8("clicked()")), main.goRegistrarDonacion)
         QtCore.QMetaObject.connectSlotsByName(main)
 
     def retranslateUi(self, main):
-        main.setWindowTitle(_translate("main", "Sistema SMD", None))
-        self.textEdit.setHtml(_translate("main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        main.setWindowTitle(QtGui.QApplication.translate("main", "Sistema SMD", None, QtGui.QApplication.UnicodeUTF8))
+        self.textEdit.setHtml(QtGui.QApplication.translate("main", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Bienvenido a SMD, un sistema práctico y confiable que le ayudará a llevar el control de los donantes y donaciones involucradas con la organización. Específicamente puede registrar, modificar, eliminar donantes y donaciones. Tambien el sistema le permite realizar búsquedas detalladas de tipos de donaciones y donantes.</p></body></html>", None))
-        self.groupBox.setTitle(_translate("main", "Donante", None))
-        self.commandLinkButton_2.setText(_translate("main", "Registrar Donante", None))
-        self.commandLinkButton_7.setText(_translate("main", "Gestionar Donantes", None))
-        self.groupBox_2.setTitle(_translate("main", "Donaciones", None))
-        self.commandLinkButton_4.setText(_translate("main", "Registrar Donacion", None))
-        self.commandLinkButton_5.setText(_translate("main", "Gestionar Donaciones", None))
-        self.actionRegistrar_Donante.setText(_translate("main", "Registrar Donante", None))
-        self.actionModificar_Donante.setText(_translate("main", "Modificar Donante", None))
-        self.actionModificar_Donante_2.setText(_translate("main", "Modificar Donante", None))
-        self.actionEliminar_Donante.setText(_translate("main", "Eliminar Donante", None))
-        self.actionBuscar_Donante.setText(_translate("main", "Buscar Donantes", None))
-        self.actionBuscar_Donacion.setText(_translate("main", "Buscar Donaciones", None))
-        self.actionRegistrar_Donacion.setText(_translate("main", "Registrar Donación", None))
-        self.actionModificar_Donacion.setText(_translate("main", "Modificar Donacion", None))
-        self.actionEliminar_Donacion.setText(_translate("main", "Eliminar Donación", None))
-        self.actionSalir.setText(_translate("main", "Salir", None))
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Bienvenido a SMD, un sistema práctico y confiable que le ayudará a llevar el control de los donantes y donaciones involucradas con la organización. Específicamente puede registrar, modificar, eliminar donantes y donaciones. Tambien el sistema le permite realizar búsquedas detalladas de tipos de donaciones y donantes.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox.setTitle(QtGui.QApplication.translate("main", "Donante", None, QtGui.QApplication.UnicodeUTF8))
+        self.commandLinkButton_2.setText(QtGui.QApplication.translate("main", "Registrar Donante", None, QtGui.QApplication.UnicodeUTF8))
+        self.commandLinkButton_7.setText(QtGui.QApplication.translate("main", "Gestionar Donantes", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox_2.setTitle(QtGui.QApplication.translate("main", "Donaciones", None, QtGui.QApplication.UnicodeUTF8))
+        self.commandLinkButton_4.setText(QtGui.QApplication.translate("main", "Registrar Donacion", None, QtGui.QApplication.UnicodeUTF8))
+        self.commandLinkButton_5.setText(QtGui.QApplication.translate("main", "Gestionar Donaciones", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionRegistrar_Donante.setText(QtGui.QApplication.translate("main", "Registrar Donante", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionModificar_Donante.setText(QtGui.QApplication.translate("main", "Modificar Donante", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionModificar_Donante_2.setText(QtGui.QApplication.translate("main", "Modificar Donante", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionEliminar_Donante.setText(QtGui.QApplication.translate("main", "Eliminar Donante", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionBuscar_Donante.setText(QtGui.QApplication.translate("main", "Buscar Donantes", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionBuscar_Donacion.setText(QtGui.QApplication.translate("main", "Buscar Donaciones", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionRegistrar_Donacion.setText(QtGui.QApplication.translate("main", "Registrar Donación", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionModificar_Donacion.setText(QtGui.QApplication.translate("main", "Modificar Donacion", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionEliminar_Donacion.setText(QtGui.QApplication.translate("main", "Eliminar Donación", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSalir.setText(QtGui.QApplication.translate("main", "Salir", None, QtGui.QApplication.UnicodeUTF8))
 
