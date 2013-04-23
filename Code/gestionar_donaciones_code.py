@@ -20,7 +20,8 @@ donante = Table('donante', metadata, autoload=True)
 monetaria = Table('monetaria', metadata, autoload=True)
 mobiliaria = Table('mobiliaria', metadata, autoload=True)
 especie = Table('especie', metadata, autoload=True)
-eliminar = ""
+eliminar_id = ""
+eliminar_tabla = ""
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -56,8 +57,9 @@ class GestionarDonaciones(QtGui.QMainWindow):
                 fila = item.row()
                 columna = item.column()
                 item_id = table.item(fila,0)
+                item_tabla = table.item(fila,1)
                 if len(str(item_id.text()))!=0: #Contiene el identificador del item seleccionado.
-                        if columna==5:
+                        if columna==6:
                                 self.modificarDonacionWindow = ModificarDonacion(self)
                                 try:
                                         self.ui.horizontalScrollBar.hide()
@@ -76,9 +78,10 @@ class GestionarDonaciones(QtGui.QMainWindow):
                                 self.modificarDonacionWindow.ui.Rif_Ci.setText(self.modificarDonacionWindow.Rif_Ci)
                                 self.modificarDonacionWindow.show()
                                 self.hide()
-                        elif(columna==6):
-                                global eliminar
-                                eliminar = str(item_id.text())
+                        elif(columna==7):
+                                global eliminar_id, eliminar_tabla
+                                eliminar_id = str(item_id.text())
+                                eliminar_tabla = str(item_tabla.text())
                                 self.ui._dialog = QtGui.QDialog(self)
                                 self.ui._dialog.resize(400, 300)
                                 self.ui._dialog.setModal(True)
@@ -114,7 +117,12 @@ class GestionarDonaciones(QtGui.QMainWindow):
                                 self.ui._dialog.show()
 
         def eliminar(self):
-                self.delete = donante.delete().where(donante.c.donante_id==eliminar)
+                if(cmp(eliminar_tabla,"monetaria"))==0:
+                        self.delete = monetaria.delete().where(monetaria.c.monetaria_id==eliminar_id)
+                elif(cmp(eliminar_tabla,"mobiliaria"))==0:
+                        self.delete = mobiliaria.delete().where(mobiliaria.c.mobiliaria_id==eliminar_id)
+                else:
+                        self.delete = especie.delete().where(especie.c.especie_id==eliminar_id)
                 db.execute(self.delete)
                 self.ui._dialog.accept()
                 self.buscar()
@@ -137,35 +145,41 @@ class GestionarDonaciones(QtGui.QMainWindow):
                         self.ui.labelError.hide()
                         if(cmp(str(self.ui.razonCombo.currentText()),"Seleccione")==0):
                                 print "hola"
-                                s1 = text("SELECT monetaria.monetaria_id, donante.razon, monetaria.concepto, monetaria.monto, monetaria.fecha AS col "
+                                s1 = text("SELECT monetaria.monetaria_id, 'monetaria' ,donante.razon, monetaria.concepto, monetaria.monto, monetaria.fecha AS col "
                                                 "FROM donante NATURAL JOIN monetaria "
+                                                "WHERE :fechaI <= monetaria.fecha AND monetaria.fecha <= :fechaF "
                                         "UNION "
-                                        "SELECT mobiliaria.mobiliaria_id, donante.razon, mobiliaria.concepto, mobiliaria.cant, mobiliaria.fecha AS col "
+                                        "SELECT mobiliaria.mobiliaria_id, 'mobiliaria' ,donante.razon, mobiliaria.concepto, mobiliaria.cant, mobiliaria.fecha AS col "
                                                 "FROM donante NATURAL JOIN mobiliaria "
+                                                "WHERE :fechaI <= mobiliaria.fecha AND mobiliaria.fecha <= :fechaF "
                                         "UNION "
-                                        "SELECT especie.especie_id, donante.razon, especie.concepto, especie.cant, especie.fecha AS col "
+                                        "SELECT especie.especie_id, 'especie' ,donante.razon, especie.concepto, especie.cant, especie.fecha AS col "
                                                 "FROM donante NATURAL JOIN especie "
+                                                "WHERE :fechaI <= especie.fecha AND especie.fecha <= :fechaF "
                                         "ORDER BY col "
                                                 )
-                                result1 = db.execute(s1)
-                                result2 = db.execute(s1)
+                                result1 = db.execute(s1, fechaI = fecha1, fechaF = fecha2)
+                                result2 = db.execute(s1, fechaI = fecha1, fechaF = fecha2)
                         else:
                                 print "hi"
-                                s1 = text("SELECT monetaria.monetaria_id, donante.razon, monetaria.concepto, monetaria.monto, monetaria.fecha AS col "
+                                s1 = text("SELECT monetaria.monetaria_id, 'monetaria' , donante.razon, monetaria.concepto, monetaria.monto, monetaria.fecha AS col "
                                                 "FROM donante NATURAL JOIN monetaria "
                                                 "WHERE donante.razon = :razon "
+                                                "AND :fechaI <= monetaria.fecha AND monetaria.fecha <= :fechaF "
                                         "UNION "
-                                        "SELECT mobiliaria.mobiliaria_id, donante.razon, mobiliaria.concepto, mobiliaria.cant, mobiliaria.fecha AS col "
+                                        "SELECT mobiliaria.mobiliaria_id, 'mobiliaria'  ,donante.razon, mobiliaria.concepto, mobiliaria.cant, mobiliaria.fecha AS col "
                                                 "FROM donante NATURAL JOIN mobiliaria "
                                                 "WHERE donante.razon = :razon "
+                                                "AND :fechaI <= mobiliaria.fecha AND mobiliaria.fecha <= :fechaF "
                                         "UNION "
-                                        "SELECT especie.especie_id, donante.razon, especie.concepto, especie.cant, especie.fecha AS col "
+                                        "SELECT especie.especie_id, donante.razon, 'especie'  ,especie.concepto, especie.cant, especie.fecha AS col "
                                                 "FROM donante NATURAL JOIN especie "
                                                 "WHERE donante.razon = :razon "
+                                                "AND :fechaI <= especie.fecha AND especie.fecha <= :fechaF "
                                         "ORDER BY col "
                                                 )
-                                result1 = db.execute(s1, razon = str(self.ui.razonCombo.currentText()))
-                                result2 = db.execute(s1, razon = str(self.ui.razonCombo.currentText()))
+                                result1 = db.execute(s1, razon = str(self.ui.razonCombo.currentText()), fechaI = fecha1, fechaF = fecha2)
+                                result2 = db.execute(s1, razon = str(self.ui.razonCombo.currentText()), fechaI = fecha1, fechaF = fecha2)
                         z = 0
                         for row in result1:
                                 z+=1
@@ -180,11 +194,19 @@ class GestionarDonaciones(QtGui.QMainWindow):
                                 except:
                                         pass
                         else:
+                                try:
+                                        self.ui.horizontalScrollBar.hide()
+                                        self.ui.label.hide()
+                                        self.ui.label_2.hide()
+                                        self.ui.spinBox.hide()
+                                        self.ui.stackedWidget.hide()
+                                except:
+                                        pass
                                 self.fecha1_ant = fecha1
                                 self.fecha2_ant = fecha2
                                 self.select_ant = str(self.ui.razonCombo.currentText())
                                 #Creacion Tabla
-                                self.ui.numColumnas = 7
+                                self.ui.numColumnas = 8
                                 self.ui.numFilas = 5
                                 self.ui.numtablas = int(ceil(z/float(self.ui.numFilas)))
                                 print self.ui.numtablas
@@ -211,16 +233,16 @@ class GestionarDonaciones(QtGui.QMainWindow):
                                         header.setResizeMode(QHeaderView.Stretch)
                                         header = self.ui.tableWidget.verticalHeader()
                                         header.setResizeMode(QHeaderView.Stretch)
-                                        self.ui.tableWidget.setHorizontalHeaderLabels(('ID',u'Razón Solcial', 'Concepto', 'Monto o Cantidad','Fecha','Modificar', 'Eliminar'))
+                                        self.ui.tableWidget.setHorizontalHeaderLabels(('ID','Tabla',u'Razón Solcial', 'Concepto', 'Monto o Cantidad','Fecha','Modificar', 'Eliminar'))
                                         i=0
                                         for row in result2:
                                                 if i<self.ui.numFilas:
                                                         for j in range(0,self.ui.numColumnas):
                                                                 self.ui.label = QtGui.QLabel()
-                                                                if (j==5):
+                                                                if (j==6):
                                                                         self.ui.label.setText("Modificar")
                                                                         self.ui.tableWidget.setItem(i,j,QtGui.QTableWidgetItem(self.ui.label.text()))
-                                                                elif (j==6):
+                                                                elif (j==7):
                                                                         self.ui.label.setText("Eliminar")
                                                                         self.ui.tableWidget.setItem(i,j,QtGui.QTableWidgetItem(self.ui.label.text()))
                                                                 else:
@@ -238,6 +260,7 @@ class GestionarDonaciones(QtGui.QMainWindow):
                                                         item.setFlags(Qt.ItemIsEnabled)
                                                 i+=1
                                         self.ui.tableWidget.hideColumn(0)
+                                        self.ui.tableWidget.hideColumn(1)
                                         QtCore.QObject.connect(self.ui.tableWidget, QtCore.SIGNAL(_fromUtf8("itemClicked(QTableWidgetItem*)")), self.modifiedOrDelete)
                                         self.ui.verticalLayout_1.addWidget(self.ui.tableWidget)
                                 self.ui.verticalLayout.addWidget(self.ui.stackedWidget)
