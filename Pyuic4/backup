@@ -1,0 +1,52 @@
+
+    i = 0
+    result = 0
+    def setupUi(self, gestionarDonantes):
+        s = select([donante])
+        result = db.execute(s)
+        i=0
+        for row in result:
+                i+=1
+
+        for x in range(0,3):
+                self.page = QtGui.QWidget()
+                self.page.setObjectName(_fromUtf8("page_"+str(x)))
+                self.stackedWidget.addWidget(self.page)
+                self.verticalLayout_1 = QtGui.QVBoxLayout(self.page)
+                self.verticalLayout_1.setObjectName(_fromUtf8("verticalLayout_"+str(x)))
+                self.radioButton = QtGui.QRadioButton(self.page)
+                self.radioButton.setObjectName(_fromUtf8("radioButton_"+str(x)))
+                self.radioButton.setText("hola")
+
+    i = 0
+    result = 0
+    def setupUi(self, gestionarDonantes):
+        s = select([donante])
+        result = db.execute(s)
+        i=0
+        for row in result:
+                i+=1
+
+        gestionarDonantes.setObjectName(_fromUtf8("gestionarDonantes"))
+        gestionarDonantes.resize(623, 360)
+        self.centralwidget = QtGui.QWidget(gestionarDonantes)
+        self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
+        self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.stackedWidget = QtGui.QStackedWidget(self.centralwidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.stackedWidget.sizePolicy().hasHeightForWidth())
+        self.stackedWidget.setSizePolicy(sizePolicy)
+        self.stackedWidget.setObjectName(_fromUtf8("stackedWidget"))
+        for x in range(0,3):
+                self.page = QtGui.QWidget()
+                self.page.setObjectName(_fromUtf8("page_"+str(x)))
+                self.stackedWidget.addWidget(self.page)
+                self.verticalLayout_1 = QtGui.QVBoxLayout(self.page)
+                self.verticalLayout_1.setObjectName(_fromUtf8("verticalLayout_"+str(x)))
+                self.radioButton = QtGui.QRadioButton(self.page)
+                self.radioButton.setObjectName(_fromUtf8("radioButton_"+str(x)))
+                self.radioButton.setText("hola")
+        self.verticalLayout.addWidget(self.stackedWidget)
