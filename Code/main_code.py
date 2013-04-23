@@ -6,7 +6,7 @@ sys.path.insert(0,'../Pyuic4/')
 from main import Ui_main
 from registrar_donante_code import RegistrarDonante
 from gestionar_donantes_code import GestionarDonantes
-from gestionar_donaciones_code import GestionarDonaciones
+from registrar_donacion_code import RegistrarDonacion
 
 class Main(QtGui.QMainWindow):
         def __init__(self,parent=None):
@@ -26,11 +26,11 @@ class Main(QtGui.QMainWindow):
                 self.gestionarDonantesWindow.show()
                 self.hide()
 
-        def goGestionarDonaciones(self):
-                self.gestionarDonacionesWindow = GestionarDonaciones(self)
-                self.gestionarDonacionesWindow.closed.connect(self.show)
-                self.gestionarDonacionesWindow.show()
-                self.hide()
+        def goRegistrarDonacion(self):
+                self.registrarDonacionWindow = RegistrarDonacion(self)
+                self.registrarDonacionWindow.closed.connect(self.show)
+                self.registrarDonacionWindow.show()
+                self.hide()                
 
 if __name__ == "__main__":
         app = QtGui.QApplication(sys.argv)
