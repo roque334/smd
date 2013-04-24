@@ -18,10 +18,9 @@ donante = Table('donante', metadata,
                 )
 
 monetaria = Table('monetaria', metadata,
-                Column ('monetaria_id',Integer(unsigned=True, zerofill=True), Sequence('monetaria_id_seq',start=1, increment=1), primary_key = True),
+                Column ('monetaria_id',Integer(unsigned=True, zerofill=True), Sequence('monetaria_id_seq',start=1, increment=1,optional=True), primary_key = True),
                 Column ('nro', String(15), nullable = True),
                 Column ('tipo_op', CHAR, nullable = False),
-                Column ('concepto', String(30), nullable = False),
                 Column ('monto', Float, nullable = False),
                 Column ('fecha', Date, nullable = False),
                 Column ('donante_id', String(12), ForeignKey('donante.donante_id')),
@@ -31,7 +30,7 @@ monetaria = Table('monetaria', metadata,
                 )
 
 mobiliaria = Table('mobiliaria', metadata,
-                Column ('mobiliaria_id',Integer(unsigned=True, zerofill=True), Sequence('mobiliaria_id_seq', start=1, increment=1), primary_key = True),
+                Column ('mobiliaria_id',Integer(unsigned=True, zerofill=True), Sequence('mobiliaria_id_seq', start=1, increment=1,optional=True), primary_key = True),
                 Column ('concepto', String(30), nullable = False),
                 Column ('cant', Float, nullable = False),
                 Column ('fecha', Date, nullable = False),
@@ -42,7 +41,7 @@ mobiliaria = Table('mobiliaria', metadata,
                 )
 
 especie = Table('especie', metadata,
-                Column ('especie_id',Integer(unsigned=True, zerofill=True), Sequence('especie_id_seq',start=1,increment=1), primary_key = True),
+                Column ('especie_id',Integer(unsigned=True, zerofill=True), Sequence('especie_id_seq',start=1,increment=1,optional=True), primary_key = True),
                 Column ('concepto', String(30), nullable = False),
                 Column ('cant', Float, nullable = False),
                 Column ('fecha', Date, nullable = False),
@@ -52,7 +51,7 @@ especie = Table('especie', metadata,
 
                 )
 
-metadata.create_all()
+metadata.create_all(db)
 
 ins= donante.insert().values(donante_id='V-20028330', razon='Roque Contreras', tipo='Natural', direccion='Caracas, El Marques', telefono='0412-2802888')
 db.execute(ins)
@@ -62,5 +61,9 @@ ins.compile().params
 db.execute(ins)
 
 ins = especie.insert().values(concepto='Detergente', cant = 20, fecha='2013-04-15', donante_id='V-20028330')
+ins.compile().params
+db.execute(ins)
+
+ins = monetaria.insert().values(nro='000123', monto = 100000, tipo_op= 'C', fecha='2013-04-15', donante_id='V-20028330')
 ins.compile().params
 db.execute(ins)

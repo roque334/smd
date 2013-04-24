@@ -159,9 +159,9 @@ class RegistrarDonacion(QtGui.QMainWindow):
                         vartemp= str(vartemp.toPyDate())
                         self.fecha= vartemp
                         if(self.tipo_don=='E'):
-                                seq = Sequence('especie_id_seq')
-                                nextid = db.execute(seq)
-                                ins = especie.insert().values(especie_id=nextid,concepto=self.concep, cant=self.cant_monto, fecha=self.fecha,donante_id=self.rif_ci)
+                                
+                                ins = especie.insert().values(concepto=self.concep, cant=self.cant_monto, fecha=self.fecha,donante_id=self.rif_ci)
+                                ins.compile().params
                                 try:
                                         db.execute(ins)
                                         self.ui.textEdit.setText(u"-Donacion Registrada con éxito")
@@ -189,9 +189,9 @@ class RegistrarDonacion(QtGui.QMainWindow):
                                 except IntegrityError:
                                         self.ui.textEdit.setText(u"-La donacion ya esta registrada.\n")
                         elif(self.tipo_don=='M'):
-                                seq = Sequence('mobiliaria_id_seq')
-                                nextid = db.execute(seq)
-                                ins = mobiliaria.insert().values(mobiliaria_id=nextid,concepto=self.concep, cant=self.cant_monto, fecha=self.fecha,donante_id=self.rif_ci)
+
+                                ins = mobiliaria.insert().values(concepto=self.concep, cant=self.cant_monto, fecha=self.fecha,donante_id=self.rif_ci)
+                                ins.compile().params
                                 try:
                                         db.execute(ins)
                                         self.ui.textEdit.setText(u"-Donacion Registrada con éxito")
@@ -219,9 +219,9 @@ class RegistrarDonacion(QtGui.QMainWindow):
                                 except IntegrityError:
                                         self.ui.textEdit.setText(u"-La donacion ya esta registrada.\n\n")
                         elif(self.tipo_don=='C'):    
-                                seq = Sequence('monetaria_id_seq')
-                                nextidMon = db.execute(seq)
-                                ins = monetaria.insert().values(monetaria_id= nextidMon,nro=self.concep, tipo_op=self.tipo_mon, monto=self.cant_monto, fecha=self.fecha,donante_id=self.rif_ci)
+
+                                ins = monetaria.insert().values(nro=self.concep, tipo_op=self.tipo_mon, monto=self.cant_monto, fecha=self.fecha,donante_id=self.rif_ci)
+                                ins.compile().params
                                 try:
                                         db.execute(ins)
                                         self.ui.textEdit.setText(u"-Donacion Registrada con éxito")
