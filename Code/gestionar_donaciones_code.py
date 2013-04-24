@@ -145,15 +145,15 @@ class GestionarDonaciones(QtGui.QMainWindow):
                         self.ui.labelError.hide()
                         if(cmp(str(self.ui.razonCombo.currentText()),"Seleccione")==0):
                                 print "hola"
-                                s1 = text("SELECT monetaria.monetaria_id, 'monetaria' ,donante.razon, monetaria.concepto, monetaria.monto, monetaria.fecha AS col "
+                                s1 = text("SELECT monetaria.monetaria_id, 'monetaria' , donante.razon, monetaria.concepto, monetaria.monto, monetaria.fecha AS col "
                                                 "FROM donante NATURAL JOIN monetaria "
                                                 "WHERE :fechaI <= monetaria.fecha AND monetaria.fecha <= :fechaF "
                                         "UNION "
-                                        "SELECT mobiliaria.mobiliaria_id, 'mobiliaria' ,donante.razon, mobiliaria.concepto, mobiliaria.cant, mobiliaria.fecha AS col "
+                                        "SELECT mobiliaria.mobiliaria_id, 'mobiliaria' , donante.razon, mobiliaria.concepto, mobiliaria.cant, mobiliaria.fecha AS col "
                                                 "FROM donante NATURAL JOIN mobiliaria "
                                                 "WHERE :fechaI <= mobiliaria.fecha AND mobiliaria.fecha <= :fechaF "
                                         "UNION "
-                                        "SELECT especie.especie_id, 'especie' ,donante.razon, especie.concepto, especie.cant, especie.fecha AS col "
+                                        "SELECT especie.especie_id, 'especie' , donante.razon, especie.concepto, especie.cant, especie.fecha AS col "
                                                 "FROM donante NATURAL JOIN especie "
                                                 "WHERE :fechaI <= especie.fecha AND especie.fecha <= :fechaF "
                                         "ORDER BY col "
