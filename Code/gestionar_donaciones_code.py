@@ -172,7 +172,7 @@ class GestionarDonaciones(QtGui.QMainWindow):
                                                 "WHERE donante.razon = :razon "
                                                 "AND :fechaI <= mobiliaria.fecha AND mobiliaria.fecha <= :fechaF "
                                         "UNION "
-                                        "SELECT especie.especie_id, donante.razon, 'especie'  ,especie.concepto, especie.cant, especie.fecha AS col "
+                                        "SELECT especie.especie_id, 'especie', donante.razon ,especie.concepto, especie.cant, especie.fecha AS col "
                                                 "FROM donante NATURAL JOIN especie "
                                                 "WHERE donante.razon = :razon "
                                                 "AND :fechaI <= especie.fecha AND especie.fecha <= :fechaF "
