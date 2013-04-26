@@ -7,6 +7,7 @@ from PyQt4.QtCore import QDate
 import sys
 sys.path.insert(0,'../Pyuic4/')
 from gestionarDonaciones import Ui_gestionarDonaciones
+from modificar_donacion_code import ModificarDonacion
 import re
 from PyQt4.QtCore import pyqtSignal
 from sqlalchemy import *
@@ -59,25 +60,132 @@ class GestionarDonaciones(QtGui.QMainWindow):
                 item_id = table.item(fila,0)
                 item_tabla = table.item(fila,1)
                 if len(str(item_id.text()))!=0: #Contiene el identificador del item seleccionado.
+                        
                         if columna==6:
-                                self.modificarDonacionWindow = ModificarDonacion(self)
-                                try:
-                                        self.ui.horizontalScrollBar.hide()
-                                        self.ui.label.hide()
-                                        self.ui.label_2.hide()
-                                        self.ui.spinBox.hide()
-                                        self.ui.stackedWidget.hide()
-                                except:
-                                        pass
-                                self.ui.dateEdit.setDate(QtCore(QDate(self.fecha1_anterior.date())))
-                                self.ui.dateEdit_2.setDate(QtCore(QDate(self.fecha2_anterior.date())))
-                                self.ui.razonCombo.setCurrentIndex(self.ui.razonCombo.findText(select_anterior, Qt.MatchExactly))
-                                self.modificarDonacionWindow.closed.connect(self.buscar)
-                                self.modificarDonacionWindow.closed.connect(self.show)
-                                self.modificarDonacionWindow.Rif_Ci = item_RC.text()
-                                self.modificarDonacionWindow.ui.Rif_Ci.setText(self.modificarDonacionWindow.Rif_Ci)
-                                self.modificarDonacionWindow.show()
-                                self.hide()
+                                eliminar_id = str(item_id.text())
+                                eliminar_tabla = str(item_tabla.text())
+                                if(cmp(eliminar_tabla,"monetaria"))==0:
+                                    
+                                    s = select([monetaria]).where(monetaria.c.monetaria_id==eliminar_id)
+                                    result = db.execute(s)
+                                    for row in result:
+                                        numero= row['nro']
+                                        concepto=row['concepto']
+                                        tipo_mon=row['tipo_op']
+                                        monto=row['monto']
+                                        razon_nom = row['donante_id']
+                                        print row
+
+                                    if(tipo_mon=='B'):
+                                        flag = 1
+                                    elif(tipo_mon=='C'):
+                                        flag = 2
+                                    elif(tipo_mon=='E'):
+                                        flag = 3
+                                    else:
+                                        flag = 4    
+
+                                    self.modificarDonacionWindow = ModificarDonacion(self)
+                                    try:
+                                            self.ui.horizontalScrollBar.hide()
+                                            self.ui.label.hide()
+                                            self.ui.label_2.hide()
+                                            self.ui.spinBox.hide()
+                                            self.ui.stackedWidget.hide()
+                                    except:
+                                            pass
+                                    #self.ui.razonCombo.setCurrentIndex(self.ui.razonCombo.findText(select_anterior, Qt.MatchExactly))
+                                    self.modificarDonacionWindow.closed.connect(self.buscar)
+                                    self.modificarDonacionWindow.closed.connect(self.show)
+                                    self.modificarDonacionWindow.Rif_Ci = razon_nom
+                                    self.modificarDonacionWindow.ui.Rif_Ci.setText(self.modificarDonacionWindow.Rif_Ci)
+                                    self.modificarDonacionWindow.ui.monetaria.setChecked(True)
+                                    self.modificarDonacionWindow.concepto=concepto
+                                    self.modificarDonacionWindow.ui.concepto.setText(self.modificarDonacionWindow.concepto)
+                                    self.modificarDonacionWindow.ui.tipoMonetaria.setCurrentIndex(flag)
+                                    self.modificarDonacionWindow.numero=numero
+                                    self.modificarDonacionWindow.ui.numero.setEnabled(True)
+                                    self.modificarDonacionWindow.ui.label_num.setEnabled(True)
+                                    self.modificarDonacionWindow.ui.numero.setText(self.modificarDonacionWindow.numero)
+                                    self.modificarDonacionWindow.Serial="C"+eliminar_id
+                                    self.modificarDonacionWindow.ui.Serial.setText(self.modificarDonacionWindow.Serial)
+                                    self.modificarDonacionWindow.cantidad_monto=str(monto)
+                                    self.modificarDonacionWindow.ui.cantidad_monto.setText(self.modificarDonacionWindow.cantidad_monto)
+                                    self.modificarDonacionWindow.show()
+                                    self.hide()        
+
+                                elif(cmp(eliminar_tabla,"mobiliaria"))==0:
+                                    s = select([mobiliaria]).where(mobiliaria.c.mobiliaria_id==eliminar_id)
+                                    result = db.execute(s)
+                                    for row in result:
+                                        
+                                        concepto=row['concepto']
+                                        
+                                        monto=row['cant']
+                                        razon_nom = row['donante_id']
+                                        print row
+                                    self.modificarDonacionWindow = ModificarDonacion(self)
+                                    try:
+                                            self.ui.horizontalScrollBar.hide()
+                                            self.ui.label.hide()
+                                            self.ui.label_2.hide()
+                                            self.ui.spinBox.hide()
+                                            self.ui.stackedWidget.hide()
+                                    except:
+                                            pass
+                                    #self.ui.razonCombo.setCurrentIndex(self.ui.razonCombo.findText(select_anterior, Qt.MatchExactly))
+                                    self.modificarDonacionWindow.closed.connect(self.buscar)
+                                    self.modificarDonacionWindow.closed.connect(self.show)
+                                    self.modificarDonacionWindow.Rif_Ci = razon_nom
+                                    self.modificarDonacionWindow.ui.Rif_Ci.setText(self.modificarDonacionWindow.Rif_Ci)
+                                    self.modificarDonacionWindow.ui.tipoMonetaria.setEnabled(False)
+                                    self.modificarDonacionWindow.ui.mobiliaria.setChecked(True)
+                                    self.modificarDonacionWindow.concepto=concepto
+                                    self.modificarDonacionWindow.ui.concepto.setText(self.modificarDonacionWindow.concepto)
+                                    self.modificarDonacionWindow.Serial="M"+eliminar_id
+                                    self.modificarDonacionWindow.ui.Serial.setText(self.modificarDonacionWindow.Serial)
+                                    self.modificarDonacionWindow.cantidad_monto=str(monto)
+                                    self.modificarDonacionWindow.ui.cantidad_monto.setText(self.modificarDonacionWindow.cantidad_monto)
+                                    self.modificarDonacionWindow.show()
+                                    self.hide()        
+
+                                else:
+                                    s = select([especie]).where(especie.c.especie_id==eliminar_id)
+                                    result = db.execute(s)
+                                    for row in result:
+                                        
+                                        concepto=row['concepto']
+                                        
+                                        monto=row['cant']
+                                        razon_nom = row['donante_id']
+                                        print row
+                                    self.modificarDonacionWindow = ModificarDonacion(self)
+                                    try:
+                                            self.ui.horizontalScrollBar.hide()
+                                            self.ui.label.hide()
+                                            self.ui.label_2.hide()
+                                            self.ui.spinBox.hide()
+                                            self.ui.stackedWidget.hide()
+                                    except:
+                                            pass
+                                    #self.ui.razonCombo.setCurrentIndex(self.ui.razonCombo.findText(select_anterior, Qt.MatchExactly))
+                                    self.modificarDonacionWindow.closed.connect(self.buscar)
+                                    self.modificarDonacionWindow.closed.connect(self.show)
+                                    self.modificarDonacionWindow.Rif_Ci = razon_nom
+                                    self.modificarDonacionWindow.ui.Rif_Ci.setText(self.modificarDonacionWindow.Rif_Ci)
+                                    self.modificarDonacionWindow.ui.especie.setChecked(True)
+                                    self.modificarDonacionWindow.ui.tipoMonetaria.setEnabled(False)
+                                    self.modificarDonacionWindow.concepto=concepto
+                                    self.modificarDonacionWindow.ui.concepto.setText(self.modificarDonacionWindow.concepto)
+                                    self.modificarDonacionWindow.Serial= "E"+eliminar_id
+                                    self.modificarDonacionWindow.ui.Serial.setText(self.modificarDonacionWindow.Serial)
+                                    self.modificarDonacionWindow.cantidad_monto=str(monto)
+                                    self.modificarDonacionWindow.ui.cantidad_monto.setText(self.modificarDonacionWindow.cantidad_monto)
+                                    self.modificarDonacionWindow.show()
+                                    self.hide()   
+                                
+                                
+                                
                         elif(columna==7):
                                 global eliminar_id, eliminar_tabla
                                 eliminar_id = str(item_id.text())
@@ -156,7 +264,7 @@ class GestionarDonaciones(QtGui.QMainWindow):
                                         "SELECT especie.especie_id, 'especie' , donante.razon, especie.concepto, especie.cant, especie.fecha AS col "
                                                 "FROM donante NATURAL JOIN especie "
                                                 "WHERE :fechaI <= especie.fecha AND especie.fecha <= :fechaF "
-                                        "ORDER BY col "
+                                        "ORDER BY col DESC "
                                                 )
                                 result1 = db.execute(s1, fechaI = fecha1, fechaF = fecha2)
                                 result2 = db.execute(s1, fechaI = fecha1, fechaF = fecha2)
@@ -176,7 +284,7 @@ class GestionarDonaciones(QtGui.QMainWindow):
                                                 "FROM donante NATURAL JOIN especie "
                                                 "WHERE donante.razon = :razon "
                                                 "AND :fechaI <= especie.fecha AND especie.fecha <= :fechaF "
-                                        "ORDER BY col "
+                                        "ORDER BY col DESC "
                                                 )
                                 result1 = db.execute(s1, razon = str(self.ui.razonCombo.currentText()), fechaI = fecha1, fechaF = fecha2)
                                 result2 = db.execute(s1, razon = str(self.ui.razonCombo.currentText()), fechaI = fecha1, fechaF = fecha2)

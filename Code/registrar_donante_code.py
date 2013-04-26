@@ -77,14 +77,15 @@ class RegistrarDonante(QtGui.QMainWindow):
         """
         Verifica que el telefono este bien escrito. Coloco al atributo
         telefonoD el valor 0 si es correcto o 1 si no lo es.
-        
         """
         def verified_telefono(self):
                 self.telefonoD = str(self.ui.telefono.text())
-                if not(re.match("^0(212|412|414|416|424|426)-[0-9]{7}$", self.telefonoD)):
-                        self.telf_Malo=1
+                if re.match("^0(212|412|414|416|424|426)-[0-9]{7}$", self.telefonoD):
+                        self.telf_Malo=2
+                        print "Bien"
                 else:
-                        self.tel_Malo=0
+                        print "Mal"
+                        self.telf_Malo=1
 
         def verifiedAndSave(self):
                 self.razonS = str(self.ui.razon.text())
@@ -92,7 +93,7 @@ class RegistrarDonante(QtGui.QMainWindow):
                 #Caso en el que el formulario esta correcto (No toma en cuenta si el Rif esta o no registrado)
                 if(len(self.rif_ci)!=0 and len(self.razonS)!=0 and 
                                 len(self.direccionD)!=0 and len(self.telefonoD)!=0 and 
-                                self.telf_Malo==0 and 
+                                self.telf_Malo==2 and 
                                 ((self.RC_Malo==1 and self.tipo_don=='N') or (self.RC_Malo==2 and self.tipo_don=='J'))):
                         ins = donante.insert().values(donante_id=self.rif_ci,razon=self.razonS, tipo=self.tipoD, direccion=self.direccionD, telefono=self.telefonoD)
                         try:

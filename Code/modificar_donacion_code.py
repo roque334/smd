@@ -3,7 +3,7 @@
 from PyQt4 import QtCore, QtGui
 import sys
 sys.path.insert(0,'../Pyuic4/')
-from registrarDonacion import Ui_registrarDonacion
+from modificarDonacion import Ui_modificarDonacion
 from registrar_donante_code import RegistrarDonante
 import re
 from sqlalchemy.exc import IntegrityError
@@ -20,12 +20,12 @@ monetaria = Table('monetaria', metadata, autoload=True)
 mobiliaria = Table('mobiliaria', metadata, autoload=True)
 especie = Table('especie', metadata, autoload=True)
 
-class RegistrarDonacion(QtGui.QMainWindow):
+class ModificarDonacion(QtGui.QMainWindow):
         closed = pyqtSignal()
 
         def __init__(self,parent=None):
                 QtGui.QWidget.__init__(self,parent)
-                self.ui= Ui_registrarDonacion()
+                self.ui= Ui_modificarDonacion()
                 self.ui.setupUi(self)
                 self.razon_nom= ""
                 self.tipo_don = ''
@@ -72,7 +72,7 @@ class RegistrarDonacion(QtGui.QMainWindow):
                                 self.ui.especie.setEnabled(True)
                                 self.ui.mobiliaria.setEnabled(True)
                                 self.ui.monetaria.setEnabled(True)
-                                self.ui.irAgregar.setEnabled(False)
+
                                 self.ui.especie.setCheckable(True)
                                 self.ui.mobiliaria.setCheckable(True)
                                 self.ui.monetaria.setCheckable(True)
@@ -134,7 +134,7 @@ class RegistrarDonacion(QtGui.QMainWindow):
                 self.ui.label_fecha.setEnabled(True)
                 self.ui.campoFecha.setEnabled(True)
                 self.ui.label_ayuda_fecha.setEnabled(True)
-                print "hola1"
+                print "hola"
 
         def select_mobiliaria(self):
                 self.ui.numero.setText("")
@@ -158,7 +158,7 @@ class RegistrarDonacion(QtGui.QMainWindow):
                 self.ui.label_fecha.setEnabled(True)
                 self.ui.campoFecha.setEnabled(True)
                 self.ui.label_ayuda_fecha.setEnabled(True)
-                print "hola2"
+                print "hola"
 
         def select_monetario(self):        
                 
@@ -180,7 +180,7 @@ class RegistrarDonacion(QtGui.QMainWindow):
                 self.ui.label_fecha.setEnabled(True)
                 self.ui.campoFecha.setEnabled(True)
                 self.ui.label_ayuda_fecha.setEnabled(True)
-                print "hola3"
+                print "hola"
 
         def guardar_tipoMon(self):
                 tipo_donacion= str(self.ui.tipoMonetaria.currentText())
@@ -192,30 +192,27 @@ class RegistrarDonacion(QtGui.QMainWindow):
 
 
         def verifiedAndSave(self):
-                print "entro en registrarDonacion"
+                _serial= str(self.ui.Serial.text())
+                _tipo=_serial[0]
+                _idTable=_serial[1:]
+                # extraer el primer numero
                 self.concep=str(self.ui.concepto.text())
                 self.num= str(self.ui.numero.text())
                 montofloat= self.ui.cantidad_monto.text()
-                print self.rif_ci
-                print self.razon_nom
-                print montofloat
-                print self.concep
-                print self.tipo_don
                 if(len(self.rif_ci)!=0 and len(self.razon_nom)!=0 and 
-                                len(montofloat)!=0 and len(self.concep)!=0 and self.tipo_don!=''):
-                        print "entro no hay problema formulario"
+                                len(montofloat)!=0 and len(self.concep)!=0 and self.tipo_mon!=''):
+                        
                         self.cant_monto=float(montofloat)
                         
                         vartemp= self.ui.campoFecha.date() 
                         vartemp= str(vartemp.toPyDate())
                         self.fecha= vartemp
-                        if(self.tipo_don=='E'):
-                                print "estoy especie"
-                                ins = especie.insert().values(concepto=self.concep, cant=self.cant_monto, fecha=self.fecha,donante_id=self.rif_ci)
+                        if(self.tipo_don=='E'and cmp(self.tipo_don,_tipo)==0):
+                                ins = especie.update().where(especie.c.especie_id==_serial).values(concepto=self.concep, cant=self.cant_monto, fecha=self.fecha,donante_id=self.rif_ci)
                                 ins.compile().params
                                 try:
                                         db.execute(ins)
-                                        self.ui.textEdit.setText(u"-Donacion Registrada con éxito")
+                                        self.ui.textEdit.setText(u"-Donacion modificada con éxito")
                                         self.ui.Rif_Ci.setText("")
                                         self.ui.razon_nombre.setText("")
                                         self.ui.irAgregar.setEnabled(False)
@@ -239,7 +236,7 @@ class RegistrarDonacion(QtGui.QMainWindow):
                                    
                                 except IntegrityError:
                                         self.ui.textEdit.setText(u"-La donacion ya esta registrada.\n")
-                        elif(self.tipo_don=='M'):
+                        elif(self.tipo_don=='M' and cmp(self.tipo_don,_tipo)==0):
 
                                 ins = mobiliaria.insert().values(concepto=self.concep, cant=self.cant_monto, fecha=self.fecha,donante_id=self.rif_ci)
                                 ins.compile().params
@@ -269,7 +266,7 @@ class RegistrarDonacion(QtGui.QMainWindow):
 
                                 except IntegrityError:
                                         self.ui.textEdit.setText(u"-La donacion ya esta registrada.\n\n")
-                        elif(self.tipo_don=='C' and len(self.num)!=0):    
+                        elif(self.tipo_don=='C' and cmp(self.tipo_don,_tipo)==0  and len(self.num)!=0):    
 
                                 ins = monetaria.insert().values(concepto=self.concep,nro=self.num,tipo_op=self.tipo_mon, monto=self.cant_monto, fecha=self.fecha, donante_id=self.rif_ci)
                                 ins.compile().params
@@ -304,7 +301,7 @@ class RegistrarDonacion(QtGui.QMainWindow):
                                         self.ui.textEdit.setText(u"-La donacion ya esta registrada.\n\n")
 
                         else:
-                                self.text_obs+=u"-Campo Numero vacio.\n"    
+                                elf.text_obs+=u"-Campo Numero vacio.\n"                                        
                                 self.ui.textEdit.setText(self.text_obs)  
                 else:
                         #Caso en el que falta algo por llegar o algo esta malo.
@@ -319,8 +316,7 @@ class RegistrarDonacion(QtGui.QMainWindow):
                                 self.text_obs+=u"-Campo concepto vacío.\n"
                         if(len(montofloat)==0):
                                 self.text_obs+=u"-Campo cantidad/monto vacío.\n"
-                       
-                        print "ELSEE"                                              
+                                                               
                         self.ui.textEdit.setText(self.text_obs)
 
         def cancel(self):
