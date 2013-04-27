@@ -52,6 +52,25 @@ especie = Table('especie', metadata,
 
                 )
 
+gentrans = Table('gentrans', metadata,
+                Column ('gentrans_id',Integer(unsigned=True, zerofill=True), Sequence('gentrans_id_seq',start=1,increment=1, optional=True), primary_key = True)
+                )
+
+producto = Table('producto', metadata,
+                Column ('concecpto', String(30), nullable = False, primary_key = True),
+                Column ('cant', Float, nullable = False),
+                CheckConstraint('cant>0.0', name='dom_cant')
+                )
+
+transaccion = Table('transaccion', metadata,
+                Column ('transaccion_id',Integer(unsigned=True, zerofill=True), Sequence('transaccion_id_seq',start=1,increment=1, optional=True), primary_key = True),
+                Column ('concepto', String(30), nullable = False),
+                Column ('cant', Float, nullable = False),
+                Column ('fecha', Date, nullable = False),
+                Column ('gentrans_id', Integer(unsigned=True, zerofill=True), ForeignKey('gentrans.gentrans_id')),
+                CheckConstraint('cant>0.0', name='dom_cant'),
+                )
+
 metadata.create_all(db)
 
 ins= donante.insert().values(donante_id='V-20028330', razon='Roque Contreras', tipo='Natural', direccion='Caracas, El Marques', telefono='0412-2802888')
